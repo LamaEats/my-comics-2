@@ -360,6 +360,7 @@ section h2:after {
     display: table-cell;
     vertical-align: top;
     padding-bottom: 30px;
+    width: 50%;
 }
 .services .services-photo{
     padding-right: 30px;
