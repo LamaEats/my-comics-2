@@ -365,6 +365,11 @@ section h2:after {
 .services .services-photo{
     padding-right: 30px;
 }
+.services .services-photo img {
+    width: 100%;
+    height: auto;
+    vertical-align: bottom;
+}
 .services-list .photography,
 .services-list .creativity,
 .services-list .webdesign {

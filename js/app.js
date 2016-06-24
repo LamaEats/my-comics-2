@@ -1,4 +1,3 @@
-
 $('.l-item').on('click', function (event) {
     event.preventDefault();
     if (!$(this).hasClass('act')) {
