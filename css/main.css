@@ -201,7 +201,7 @@ section h2:after {
     position: relative;
     background: #95e1d3;
 }
-.about .item:first-child .inner:after{
+.about .item .inner:after{
     opacity: 0;
     content: "";
     position: absolute;
@@ -386,7 +386,7 @@ section h2:after {
     font-weight: normal;
     padding: 20px 60px;
 }
-.services-list .desc {
+.l-item .desc {
     padding: 20px 40px 20px 20px;
     margin: 0;
     border-top: 1px solid #e5e5e5;
@@ -394,7 +394,7 @@ section h2:after {
     display: none;
 }
 
-.services-list .act .desc {
+.l-item.act .desc {
     display: block;
 }
 .services-list .icon {
