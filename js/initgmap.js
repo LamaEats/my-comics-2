@@ -11,7 +11,7 @@ var options = {
     scrollwheel: false,
     disableDoubleClickZoom: true
 };
-var pin = "images/pin.png"
+var pin = "images/pin.png";
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), options);
     var marker = new google.maps.Marker ({
