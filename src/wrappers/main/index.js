@@ -6,7 +6,7 @@ export default function () {
     return (
         <Router>
             <Switch>
-                <Route exact={true} path="/" component={Home}>
+                <Route exact={true} path="/" /*component={Home}*/ render="home path">
                     <Route path="comics" /*component={Comics}*/ render="comics path" />
                     <Route path="heroes" /*component={Heroes}*/ render="heroes path" />
                     <Route path="series" /*component={Series}*/ render="series path" />
