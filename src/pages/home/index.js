@@ -8,18 +8,38 @@ export default class Home extends Component {
         super();
 
         this.state = {
-            isLoading: true
+            isLoading: true,
+            dataList: []
         }
         console.log('this is Home')
     }
 
     componentWillMount() {
         this.getData().then(response => {
-            console.log(response)
+            if (response.status === 200) {
+                this.setState({
+                    isLoading: false,
+                    dataList: [...response.data.data.results]
+                })
+            }
         })
     }
 
     getData() {
         return Request('/v1/public/characters')
+    }
+
+    render () {
+        if (this.state.isLoading) {
+            return <Loader />
+        }
+
+        return (
+            <ul>
+                {this.state.dataList.map((item, index) => {
+                    return <li key={index}>{item.name}</li>
+                })}
+            </ul>
+        )
     }
 }
