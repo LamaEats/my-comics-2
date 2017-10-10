@@ -22546,16 +22546,24 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function () {
     return _react2.default.createElement(
         _reactRouterDom.BrowserRouter,
-        null,
+        { history: _reactRouterDom.browserHistory },
         _react2.default.createElement(
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(
                 _reactRouterDom.Route,
-                { exact: true, path: '/' /*component={Home}*/, render: 'home path' },
-                _react2.default.createElement(_reactRouterDom.Route, { path: 'comics' /*component={Comics}*/, render: 'comics path' }),
-                _react2.default.createElement(_reactRouterDom.Route, { path: 'heroes' /*component={Heroes}*/, render: 'heroes path' }),
-                _react2.default.createElement(_reactRouterDom.Route, { path: 'series' /*component={Series}*/, render: 'series path' })
+                { exact: true, path: '/' /*component={Home}*/, render: function render() {
+                        return "home path";
+                    } },
+                _react2.default.createElement(_reactRouterDom.Route, { path: 'comics' /*component={Comics}*/, render: function render() {
+                        return "comics path";
+                    } }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: 'heroes' /*component={Heroes}*/, render: function render() {
+                        return "heroes path";
+                    } }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: 'series' /*component={Series}*/, render: function render() {
+                        return "series path";
+                    } })
             )
         )
     );
