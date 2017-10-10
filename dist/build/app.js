@@ -22552,7 +22552,7 @@ exports.default = function () {
             null,
             _react2.default.createElement(
                 _reactRouterDom.Route,
-                { exact: true, path: '/', component: Home },
+                { exact: true, path: '/' /*component={Home}*/, render: 'home path' },
                 _react2.default.createElement(_reactRouterDom.Route, { path: 'comics' /*component={Comics}*/, render: 'comics path' }),
                 _react2.default.createElement(_reactRouterDom.Route, { path: 'heroes' /*component={Heroes}*/, render: 'heroes path' }),
                 _react2.default.createElement(_reactRouterDom.Route, { path: 'series' /*component={Series}*/, render: 'series path' })
