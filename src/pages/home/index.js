@@ -1,45 +1,22 @@
 import React, { Component } from 'react';
-import Loader from '../../components/common/loader';
-import Request from '../../utils/request';
+import {Route} from 'react-router-dom';
+
+import Heroes from '../../pages/heroes';
+import Comics from '../../pages/comics';
+import Series from '../../pages/series';
 
 export default class Home extends Component {
-
-    constructor() {
-        super();
-
-        this.state = {
-            isLoading: true,
-            dataList: []
-        }
-        console.log('this is Home')
+    constructor(props) {
+        super(props);
     }
-
-    componentWillMount() {
-        this.getData().then(response => {
-            if (response.status === 200) {
-                this.setState({
-                    isLoading: false,
-                    dataList: [...response.data.data.results]
-                })
-            }
-        })
-    }
-
-    getData() {
-        return Request('/v1/public/characters')
-    }
-
     render () {
-        if (this.state.isLoading) {
-            return <Loader />
-        }
-
         return (
-            <ul>
-                {this.state.dataList.map((item, index) => {
-                    return <li key={index}>{item.name}</li>
-                })}
-            </ul>
+            <div className="container">
+                <Route path="/heroes" component={Heroes}/>
+                <Route path="/comics" component={Comics}/>
+                <Route path="/series" component={Series}/>
+                {this.props.children}
+            </div>
         )
     }
 }
