@@ -37,7 +37,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --progress --watch",
     "dev": "webpack --progress --verbose --display-error-details",
-    "start:dev": "serve ./"
+    "start:dev": "serve ./ -s"
   },
   "repository": {
     "type": "git",
