@@ -1,11 +1,11 @@
 import React from 'react';
-import NavBar from './navbar'
+import Logo from './logo'
 
 
 export default function Header () {
     return (
         <header>
-            <NavBar />
+            <Logo/>
         </header>
     )
 }

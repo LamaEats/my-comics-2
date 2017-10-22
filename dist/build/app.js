@@ -23326,6 +23326,10 @@ var _home = __webpack_require__(90);
 
 var _home2 = _interopRequireDefault(_home);
 
+var _sidebar = __webpack_require__(117);
+
+var _sidebar2 = _interopRequireDefault(_sidebar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23373,9 +23377,18 @@ var Wrapper = function Wrapper(props) {
 
     return _react2.default.createElement(
         'div',
-        { className: 'container wrapper' },
+        { className: 'container-fluid' },
         _react2.default.createElement(_header2.default, null),
-        props.children
+        _react2.default.createElement(
+            'div',
+            { className: 'flex-row' },
+            _react2.default.createElement(_sidebar2.default, null),
+            _react2.default.createElement(
+                'div',
+                { className: 'col-9' },
+                props.children
+            )
+        )
     );
 };
 
@@ -26426,9 +26439,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _navbar = __webpack_require__(88);
+var _logo = __webpack_require__(89);
 
-var _navbar2 = _interopRequireDefault(_navbar);
+var _logo2 = _interopRequireDefault(_logo);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26436,7 +26449,7 @@ function Header() {
     return _react2.default.createElement(
         'header',
         null,
-        _react2.default.createElement(_navbar2.default, null)
+        _react2.default.createElement(_logo2.default, null)
     );
 }
 
@@ -26456,10 +26469,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _logo = __webpack_require__(89);
-
-var _logo2 = _interopRequireDefault(_logo);
 
 var _reactRouterDom = __webpack_require__(9);
 
@@ -26486,7 +26495,6 @@ var NavBar = function (_Component) {
             return _react2.default.createElement(
                 'nav',
                 { className: 'nav navbar navbar-inverse' },
-                _react2.default.createElement(_logo2.default, null),
                 _react2.default.createElement(
                     'ul',
                     { className: 'nav navbar-nav' },
@@ -26586,7 +26594,7 @@ var _comics = __webpack_require__(111);
 
 var _comics2 = _interopRequireDefault(_comics);
 
-var _series = __webpack_require__(113);
+var _series = __webpack_require__(115);
 
 var _series2 = _interopRequireDefault(_series);
 
@@ -27628,7 +27636,7 @@ var _pager = __webpack_require__(112);
 
 var _pager2 = _interopRequireDefault(_pager);
 
-var _helpers = __webpack_require__(115);
+var _helpers = __webpack_require__(113);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27823,6 +27831,74 @@ exports.default = Pager;
 
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.parseQuery = undefined;
+
+var _parseQuery2 = __webpack_require__(114);
+
+var _parseQuery3 = _interopRequireDefault(_parseQuery2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.parseQuery = _parseQuery3.default;
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = parseQuery;
+function parseQuery(string) {
+    if (typeof string !== "string" || string.length === 0) {
+        return {};
+    }
+
+    string = string[0] === '?' ? string.substr(1) : string;
+    string = string.replace(/\+/g, ' ');
+    string = string.split("&");
+
+    var stringLen = string.length;
+    var query = {};
+    var bit = void 0;
+    var first = void 0;
+    var second = void 0;
+
+    for (var i = 0; i < stringLen; i++) {
+        bit = string[i].split("=");
+        first = bit[0];
+
+        if (first.length === 0) {
+            continue;
+        }
+
+        second = bit[1];
+
+        if (typeof query[first] === "undefined") {
+            query[first] = second;
+        } else if (query[first] instanceof Array) {
+            query[first].push(second);
+        } else {
+            query[first] = [query[first], second];
+        }
+    }
+
+    return query;
+}
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -27913,28 +27989,8 @@ var Heroes = function (_Component) {
 exports.default = Heroes;
 
 /***/ }),
-/* 114 */,
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.parseQuery = undefined;
-
-var _parseQuery2 = __webpack_require__(116);
-
-var _parseQuery3 = _interopRequireDefault(_parseQuery2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.parseQuery = _parseQuery3.default;
-
-/***/ }),
-/* 116 */
+/* 116 */,
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27943,43 +27999,26 @@ exports.parseQuery = _parseQuery3.default;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = parseQuery;
-function parseQuery(string) {
-    if (typeof string !== "string" || string.length === 0) {
-        return {};
-    }
 
-    string = string[0] === '?' ? string.substr(1) : string;
-    string = string.replace(/\+/g, ' ');
-    string = string.split("&");
+var _react = __webpack_require__(0);
 
-    var stringLen = string.length;
-    var query = {};
-    var bit = void 0;
-    var first = void 0;
-    var second = void 0;
+var _react2 = _interopRequireDefault(_react);
 
-    for (var i = 0; i < stringLen; i++) {
-        bit = string[i].split("=");
-        first = bit[0];
+var _navbar = __webpack_require__(88);
 
-        if (first.length === 0) {
-            continue;
-        }
+var _navbar2 = _interopRequireDefault(_navbar);
 
-        second = bit[1];
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-        if (typeof query[first] === "undefined") {
-            query[first] = second;
-        } else if (query[first] instanceof Array) {
-            query[first].push(second);
-        } else {
-            query[first] = [query[first], second];
-        }
-    }
+var SideBar = function SideBar(props) {
+    return _react2.default.createElement(
+        'nav',
+        { className: 'col-3 nav navbar-expand-md' },
+        _react2.default.createElement(_navbar2.default, null)
+    );
+};
 
-    return query;
-}
+exports.default = SideBar;
 
 /***/ })
 /******/ ]);

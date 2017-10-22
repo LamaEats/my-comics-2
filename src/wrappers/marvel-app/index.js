@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Switch, Route, browserHistory} from 'react-router-dom';
 import Header from '../../components/common/header';
 import Home from '../../pages/home';
+import Sidebar from '../../components/common/sidebar';
 
 
 export default class MarvelApp extends Component {
@@ -21,9 +22,14 @@ export default class MarvelApp extends Component {
 const Wrapper = (props) => {
     "use strict";
     return (
-        <div className="container wrapper">
+        <div className="container-fluid">
             <Header/>
-            {props.children}
+            <div className="flex-row">
+                <Sidebar />
+                <div className="col-9">
+                    {props.children}
+                </div>
+            </div>
         </div>
     )
 }

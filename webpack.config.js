@@ -8,7 +8,7 @@ let clientDir = (file) => path.resolve('src/', file);
 const config = {
     entry: {
         app: clientDir('index.js'),
-        style: clientDir('main.less')
+        style: clientDir('main.scss')
     },
     output: {
         path: __dirname + '/dist/build/',
@@ -37,12 +37,12 @@ const config = {
                 ]
             })
         }, {
-            test: /\.less$/,
+            test: /\.scss$/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [
                     'css-loader',
-                    'less-loader',
+                    'sass-loader',
                 ]
             })
         }, {
