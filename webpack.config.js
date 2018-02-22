@@ -6,18 +6,39 @@ const autoprefixer = require('autoprefixer');
 let clientDir = (file) => path.resolve('src/', file);
 
 const config = {
-    entry: {
-        app: clientDir('index.js'),
-        style: clientDir('main.scss')
-    },
+    entry: clientDir('index.js'),
     output: {
-        path: __dirname + '/dist/build/',
-        filename: '[name].js'
+        path: __dirname + '/dist/',
+        filename: 'app.js'
     },
+    devServer: {
+        clientLogLevel: 'warning',
+        historyApiFallback: {
+            rewrites: [
+                { from: /\/(.?)+$/, to: 'index.html' },
+            ],
+        },
+        host: 'localhost',
+        port: 5000,
+        inline: true,
+        open: true,
+        overlay: { warnings: true, errors: true },
+        publicPath: '/dist/',
+        quiet: true,
+        watchOptions: {
+            poll: false,
+        }
+    },
+
+    watchOptions: {
+        aggregateTimeout: 300,
+        ignored: /node_modules/
+    },
+
     context: __dirname,
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
     plugins: [
-        new ExtractTextPlugin({ filename: '[name].css', disable: false, allChunks: true })
+        new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true }),
     ],
     module: {
         loaders: [{
@@ -25,33 +46,74 @@ const config = {
             exclude: [/node_modules/],
             loader: "babel-loader",
             query: {
-                presets: ['es2015', 'react', 'stage-0', 'stage-1']
+                presets: [['env', {
+                    targets: {
+                        browsers: ['> 1%', 'last 2 versions', 'not ie <= 8']
+                    }
+                }], 'react', 'stage-0', 'stage-1']
             }
         }, {
-            test: /\.css$/,
+            test: /\.less/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [
-                    'css-loader',
-                    'postcss-loader'
-                ]
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: [
+                                autoprefixer({
+                                    browsers:['ie >= 8', 'last 4 version']
+                                })
+                            ],
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: { sourceMap: true }
+                    }
+                ],
             })
-        }, {
-            test: /\.scss$/,
-            loader: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: [
-                    'css-loader',
-                    'sass-loader',
-                ]
-            })
-        }, {
+        },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: [
+                                    autoprefixer({
+                                        browsers:['ie >= 8', 'last 4 version']
+                                    })
+                                ],
+                                sourceMap: true
+                            }
+                        },
+                    ]
+                })
+            }, {
             test: /\.(ttf|eot|woff|woff2|svg)$/,
             loader: 'file-loader',
             options: {
-                name: '../fonts/[name].[ext]',
+                name: 'fonts/[name].[hash:7].[ext]',
             },
-        }]
+        }, {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            loader: 'url-loader',
+            options: {
+                limit: 10000,
+                name: 'img/[name].[hash:7].[ext]'
+            }
+        },]
     }
 };
 

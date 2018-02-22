@@ -1,6 +1,8 @@
+import './main.less';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MarvelApp from './wrappers/marvel-app';
+import { Wrapper as DefaultApp } from './wrapper/wrapper'
 
 
-ReactDOM.render(<MarvelApp/>, document.querySelector('.app_root'));
+ReactDOM.render(<DefaultApp/>, document.querySelector('.app_root'));
