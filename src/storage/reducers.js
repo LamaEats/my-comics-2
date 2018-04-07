@@ -32,12 +32,18 @@ const reducer = {
     }
 };
 
-export default function (state = reducer.state, {type, payload}) {
+export default function (state, {type, payload}) {
     if (!reducer.hasOwnProperty(type)) {
         return;
     }
 
-    reducer.state = state;
+    console.log(state)
+
+    if (!state) {
+        state = {...reducer.state}
+    } else {
+      reducer.state = {...state};
+    }
 
     return reducer[type]({...payload});
 }

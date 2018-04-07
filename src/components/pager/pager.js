@@ -5,7 +5,6 @@ import {
 } from '../../storage/actions'
 
 const Pager = (props) => {
-    console.log(props)
     const { count, offset, total, step, match: { path } } = props;
     const currentPage = (offset / count) + 1;
     const maxPage = Math.ceil(total / count);
@@ -25,20 +24,30 @@ const Pager = (props) => {
     };
 
     return (
-        <ul className="pagination">
+        <div className="pagination">
+            <Link
+                to={from > 1 ? relPath(from - 1) : ''}
+                className={`pagination__item pagination__item_prev${currentPage > 1 ? '' : ' disabled'}`}
+            >
+                <i className="glyphicon glyphicon-chevron-left" />
+            </Link>
             {rangeArray.map((page, index) => {
                 return <Page page={page} path={relPath(page)} key={index} isCurrent={page === currentPage}/>
             })}
-        </ul>
+            <Link
+              to={to < maxPage ? relPath(to + 1) : ''}
+              className={`pagination__item pagination__item_next${currentPage < maxPage ? '' : ' disabled'}`}
+            >
+                <i className="glyphicon glyphicon-chevron-right" />
+            </Link>
+        </div>
     )
 };
 
 const Page = (props) => (
-    <li className={`${props.isCurrent ? 'active' : ''}`}>
-        <Link to={props.path}>
-            {props.page}
-        </Link>
-    </li>
+    <Link to={props.path} className={`pagination__item${props.isCurrent ? ' active' : ''}`}>
+        {props.page}
+    </Link>
 );
 
 const range = (from, to) => {

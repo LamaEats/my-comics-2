@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Cover from '../cover/cover'
 
 
 export const ComicsItem = (props) => {
@@ -9,7 +10,8 @@ export const ComicsItem = (props) => {
         <div className={"comics-item"}>
             <div className="comics-item__wrapper">
                 <figure className="comics-item__picture">
-                    <img src={path + '/landscape_incredible.' + extension}/>
+                    <Cover path={path} ext={extension} />
+                    {/*<img src={path + '/landscape_incredible.' + extension}/>*/}
                 </figure>
                 <figcaption className="comics-item__caption">
                     <ComicsTitle title={title}/>

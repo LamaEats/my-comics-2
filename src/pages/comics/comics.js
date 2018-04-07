@@ -41,10 +41,12 @@ class Comics extends React.Component {
 
 const mapStateToProps = (state, props) => {
     let { page } = props.match.params;
+
     if (!page) page = 1;
+
     return {
         ...state,
-        page
+        page: +page
     }
 };
 

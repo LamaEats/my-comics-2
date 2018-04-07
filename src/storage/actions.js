@@ -32,7 +32,7 @@ export function submitRequest (type) {
 
         const { path, params } = getState();
 
-        console.log(params)
+        console.log(getState())
 
         return Request.get(path, params)
             .then(({data}) => {
@@ -40,4 +40,19 @@ export function submitRequest (type) {
                 return dispatch(receivedItems(results, {offset, total, count}))
             })
     }
+}
+
+export function fetchImage (path, ext, type = 'landscape_incredible' ) {
+  return (dispatch) => {
+      return Request.get(`${path}/${type}.${ext}`).then(response => {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = () => reject;
+              reader.readAsText(response.data)
+
+              console.log(reader.result)
+          })
+      })
+  }
 }
