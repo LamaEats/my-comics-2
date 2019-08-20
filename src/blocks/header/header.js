@@ -1,53 +1,59 @@
-import React from 'react';
+import React from 'react'
+import {makeClassNames} from '@@Components/UI/utils/makeClassNames'
+import { Button } from '@@Components/UI/Button'
 
 
 class Header extends React.Component {
-    constructor (props) {
-        super(props);
+  constructor (props) {
+    super(props)
 
-        this.state = {
-            isOpened: false
-        }
+    this.state = {
+      isOpened: true,
     }
+  }
 
-    clickHandler (event) {
-        event.preventDefault();
+  clickHandler = () => this.setState(() => ({
+    isOpened: !this.state.isOpened,
+  }))
 
-        return this.setState(() => {
-            return {
-                isOpened: !this.state.isOpened
-            }
-        })
-    }
-
-    render() {
-        const headerClassName = this.state.isOpened ? ' header_expand' : '';
-        return (
-            <div className={'header' + headerClassName}>
-                <div className="header__overlay">
-                    <div className="header__bubble"></div>
-                </div>
-                <a href="" className="header__link" onClick={this.clickHandler.bind(this)}>
-                    <HeaderToggleText {...this.state} />
-                </a>
-            </div>
-        )
-    }
-}
-
-export default Header;
-
-const HeaderToggleText = (props) => {
-    "use strict";
-
-    const { isOpened } = props;
-    const iconText = isOpened ? 'less' : 'more';
-    const iconClassName = isOpened ? ' glyphicon-circle-arrow-up' : ' glyphicon-circle-arrow-down';
+  render () {
+    const className = makeClassNames('header', {
+      'header_expand': this.state.isOpened,
+    })
 
     return (
-        <span>
-            {iconText}&nbsp;
-            <i className={'glyphicon' + iconClassName}/>
-        </span>
+      <div className={ className }>
+        <div className="header__overlay">
+          <div className="header__bubble"/>
+        </div>
+        <Button
+          className="header__link"
+          onClick={this.clickHandler}
+          text
+        >
+          <HeaderToggleText { ...this.state } />
+        </Button>
+      </div>
     )
-};
+  }
+}
+
+export default Header
+
+const HeaderToggleText = (props) => {
+  'use strict'
+
+  const { isOpened } = props
+  const iconText = isOpened ? 'less' : 'more'
+  const iconClassName = makeClassNames('glyphicon', {
+    'glyphicon-circle-arrow-down': !isOpened,
+    'glyphicon-circle-arrow-up': isOpened,
+  })
+
+  return (
+    <>
+      { iconText }&nbsp;
+      <i className={ iconClassName }/>
+    </>
+  )
+}

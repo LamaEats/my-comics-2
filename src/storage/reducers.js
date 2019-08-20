@@ -1,49 +1,82 @@
 import { apis } from '../utils'
+import { hasOwnProperty } from '@@Components/UI/utils/utils'
+
+
+const initialState = {
+  isGetting: false,
+  path: '',
+  items: [],
+  params: {
+    page: 1,
+  },
+  id: null,
+  shownModal: false
+}
 
 const reducer = {
-    state: {
-        isGetting: false,
-        path: '',
-        items: [],
-        page: 1,
-        pagerData: {}
-    },
-
-    getItems ({type}) {
-        return {
-            ...this.state,
-            isGetting: false,
-            path: apis[type]
-        }
-    },
-    receivedItems ({items, params}) {
-        return {
-            ...this.state,
-            isGetting: true,
-            items: [...items],
-            pagerData: {...params}
-        }
-    },
-    changePage ({page = 1}) {
-        return {
-            ...this.state,
-            page
-        }
+  getItems (state, { type }) {
+    return {
+      ...state,
+      isGetting: false,
+      path: apis[ type ],
     }
-};
-
-export default function (state, {type, payload}) {
-    if (!reducer.hasOwnProperty(type)) {
-        return;
+  },
+  receivedItems (state, { items, params, isAppend }) {
+    return {
+      ...state,
+      isGetting: true,
+      items: isAppend ? [ ...state.items, ...items ] : [ ...items ],
+      params,
     }
-
-    console.log(state)
-
-    if (!state) {
-        state = {...reducer.state}
-    } else {
-      reducer.state = {...state};
+  },
+  changePage (state, { page = 1 }) {
+    return {
+      ...state,
+      params: {
+        ...state.params,
+        page,
+      },
     }
+  },
+  setItemId (state, { id }) {
+    return {
+      ...state,
+      id
+    }
+  },
+  dropItemId (state) {
+    return {
+      ...state,
+      id: null
+    }
+  },
+  dropItems (state) {
+    return {
+      ...state,
+      items: [],
+      params: {},
+    }
+  },
 
-    return reducer[type]({...payload});
+  showModal (state) {
+    return {
+      ...state,
+      shownModal: true
+    }
+  },
+  closeModal (state) {
+    return {
+      ...state,
+      shownModal: false
+    }
+  }
+}
+
+export default function (state, { type, payload }) {
+  if (!hasOwnProperty.call(reducer, type)) return initialState
+  if (!state) state = { ...initialState }
+
+  reducer.state = { ...state }
+
+  return reducer[type](state, { ...payload })
 }

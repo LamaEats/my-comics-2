@@ -2,7 +2,7 @@ import './main.less';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Wrapper as DefaultApp } from './wrapper/wrapper'
+import { MyComicsApp as DefaultApp } from './wrapper/MyComicsApp'
 
 
 ReactDOM.render(<DefaultApp/>, document.querySelector('.app_root'));

@@ -1,120 +1,119 @@
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const webpack = require('webpack')
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { NODE_ENV } = process.env
 
-let clientDir = (file) => path.resolve('src/', file);
 
-const config = {
-    entry: clientDir('index.js'),
-    output: {
-        path: __dirname + '/dist/',
-        filename: 'app.js'
+module.exports = {
+  resolve: {
+    extensions: [ '.js', '.jsx' ],
+    alias: {
+      '@@Components': path.posix.join(__dirname, 'src/components/'),
     },
-    devServer: {
-        clientLogLevel: 'warning',
-        historyApiFallback: {
-            rewrites: [
-                { from: /\/(.?)+$/, to: 'index.html' },
-            ],
+  },
+  entry: './src/index.js',
+  output: {
+    path: path.posix.join(__dirname, 'dist'),
+    filename: 'app.js',
+  },
+  devServer: {
+    clientLogLevel: 'warning',
+    historyApiFallback: {
+      rewrites: [
+        {
+          from: /\/(.?)+$/,
+          to: 'index.html',
         },
-        host: 'localhost',
-        port: 5000,
-        inline: true,
-        open: true,
-        overlay: { warnings: true, errors: true },
-        publicPath: '/dist/',
-        quiet: true,
-        watchOptions: {
-            poll: false,
-        }
+      ],
     },
-
+    hot: true,
+    open: false,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
     watchOptions: {
-        aggregateTimeout: 300,
-        ignored: /node_modules/
+      poll: false,
     },
-
-    context: __dirname,
-    devtool: 'eval-source-map',
-    plugins: [
-        new ExtractTextPlugin({ filename: 'styles.css', disable: false, allChunks: true }),
-    ],
-    module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            exclude: [/node_modules/],
-            loader: "babel-loader",
-            query: {
-                presets: [['env', {
-                    targets: {
-                        browsers: ['> 1%', 'last 2 versions', 'not ie <= 8']
-                    }
-                }], 'react', 'stage-0', 'stage-1']
-            }
-        }, {
-            test: /\.less/,
-            loader: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: [
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: [
-                                autoprefixer({
-                                    browsers:['ie >= 8', 'last 4 version']
-                                })
-                            ],
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'less-loader',
-                        options: { sourceMap: true }
-                    }
-                ],
-            })
-        },
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        'css-loader',
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: [
-                                    autoprefixer({
-                                        browsers:['ie >= 8', 'last 4 version']
-                                    })
-                                ],
-                                sourceMap: true
-                            }
-                        },
-                    ]
-                })
-            }, {
-            test: /\.(ttf|eot|woff|woff2|svg)$/,
-            loader: 'file-loader',
+    port: 5000,
+    publicPath: '/',
+    contentBase: 'static',
+  },
+  context: __dirname,
+  devtool: 'eval-source-map',
+  mode: NODE_ENV || 'development',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, './static'),
+        to: '/',
+        ignore: ['.*'],
+      },
+    ]),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.less/,
+        use: [
+          {
+            loader: 'style-Loader',
             options: {
-                name: 'fonts/[name].[hash:7].[ext]',
+              sourceMap: true
             },
-        }, {
-            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-            loader: 'url-loader',
+          },
+          {
+            loader: 'css-Loader',
             options: {
-                limit: 10000,
-                name: 'img/[name].[hash:7].[ext]'
+              sourceMap: true
+            },
+          },
+          {
+            loader: 'less-Loader',
+            options: {
+              sourceMap: true
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-Loader',
+            options: {
+              sourceMap: true
+            },
+          },
+          {
+            loader: 'css-Loader',
+            options: {
+              name: '/styles.css',
+              sourceMap: true
             }
-        },]
-    }
-};
-
-module.exports = config;
+          },
+        ]
+      },
+      {
+        test: /\.(ttf|eot|woff2?|svg)$/,
+        loader: 'file-Loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      }, {
+        test: /\.(png|jpg|gif|svg)(\?.*)?$/,
+        loader: 'url-Loader',
+        options: {
+          limit: Math.pow(2, 32),
+          name: '[name].[ext]',
+        },
+      },
+    ],
+  },
+}

@@ -1,0 +1,16 @@
+.cover {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    box-shadow: 0 1px 5px -1px @shadowColor;
+  }
+  &_circle img {
+    border-radius: 50%;
+  }
+  &_rounded img {
+    border-radius: @borderRadius;
+  }
+}

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logger } from '@@Components/UI/utils/utils'
 
 const spreadResponse = (response, key) => {
     if (response.hasOwnProperty(key)) {
@@ -16,7 +17,9 @@ const spreadResponse = (response, key) => {
 const prepareResponseData = (data) => {
     try {
         data = JSON.parse(data)
-    } catch (e) {/* */}
+    } catch (e) {
+      logger('Request error', e)
+    }
 
     data = ['data'].reduce(spreadResponse, data);
 

@@ -1,0 +1,21 @@
+.Navigation {
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0 1px 5px -1px @defaultShadowColor;
+  flex: 1;
+
+  &__item {
+    padding: 1.2em;
+    margin: 0;
+    color: #333333;
+    font-weight: 400;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      font-weight: 700;
+      border-bottom-color: currentColor;
+    }
+  }
+}
