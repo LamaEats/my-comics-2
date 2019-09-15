@@ -1,5 +1,9 @@
 const portalNode = document.querySelector('.app_portal')
-const modalRoot = document.createElement('div')
-modalRoot.className = 'modal modal_no-transition'
 
-export { portalNode, modalRoot }
+export { portalNode }
+
+export const MODAL_SIZE = {
+  LG: 'LG',
+  MD: 'MD',
+  SM: 'sm'
+}

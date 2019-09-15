@@ -2,7 +2,7 @@ import React, { Children, Component } from 'react'
 
 export const slots = (...args) => WrappedComponent => {
   if (!args.length) {
-    throw new Error('You must passed component slots names, but got undefined')
+    throw 'You must passed component slots names, but got undefined'
   }
 
   return class SlottedComponent extends Component {
@@ -13,11 +13,9 @@ export const slots = (...args) => WrappedComponent => {
     get slots () {
       return this.childes.reduce((ob, child) => {
         const { props } = child
+        ob[props.slot] = child
 
-        return {
-          ...ob,
-          [props.slot]: React.cloneElement(child, child.props, child.children)
-        }
+        return ob
       }, {})
     }
 
@@ -27,15 +25,14 @@ export const slots = (...args) => WrappedComponent => {
       )
 
       if (!isSingleComponentForEachSlot) {
-        throw new Error('For each slot you must passed a single component')
+        throw 'For each slot you must passed a single component'
       }
     }
 
 
     render () {
-      const { children, ...props } = this.props
-
       this.checkGettingChildes();
+      const { children, ...props } = this.props
 
       return <WrappedComponent { ...this.slots } { ...props } />
     }

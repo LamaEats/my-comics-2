@@ -7,12 +7,12 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  z-index: @zIndexModal;
-  transform: translateX(100%);
-  transition: transform .4s ease;
+  z-index: 100;
 
   &_no-transition {
-    transition: none;
+    & .modal__content {
+      transition: none;
+    }
 
     & .modal__overlay {
       transition: none;
@@ -20,15 +20,30 @@
   }
 
   &__content {
+    animation: showModal .3s ease-in-out;
     display: flex;
     flex-direction: column;
     top: 0;
     bottom: 0;
     height: 100vh;
     width: 75vw;
+    min-width: 320px;
+    max-width: 1240px;
     background: @mainBgColor;
-    z-index: @zIndexModal + 1;
     box-shadow: 0 0 10px 0  @shadowColor;
+    z-index: 1;
+
+    &_lg {
+      width: 75vw;
+    }
+
+    &_md {
+      width: 50vw;
+    }
+
+    &_sm {
+      width: 30vw;
+    }
   }
 
   &__header {
@@ -52,18 +67,6 @@
     }
   }
 
-  &_opened {
-    overflow: hidden;
-
-    & .modal {
-      transform: translateX(0);
-    }
-
-    & .modal__overlay {
-      opacity: 1;
-    }
-  }
-
   &__overlay {
     background-color: rgba(@shadowColor, 0.4);
     position: fixed;
@@ -71,7 +74,17 @@
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0;
     transition: opacity .5s ease;
+    opacity: 1;
+    z-index: 0;
+  }
+}
+
+@keyframes showModal {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }

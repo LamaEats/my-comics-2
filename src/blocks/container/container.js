@@ -6,6 +6,7 @@ import Nav from '@@Components/UI/Navigation'
 import { MainPage } from '../../pages/MainPage/MainPage'
 import List from '../../pages/List/List'
 import { ComicsTable } from '../../pages/ComicsTable'
+import { ModalsContainer } from '../../pages/Modals/container'
 
 
 @withRouter
@@ -24,8 +25,9 @@ export class Container extends Component {
         </Nav.Navigation>
         <div className="container">
           <Route path='/' exact component={MainPage}/>
+          <Route path='/modals' component={ModalsContainer} exact strict/>
           <Route path='/table/:page?/' exact component={ComicsTable}/>
-          <Route path='/:section/:page?/' component={List}/>
+          {/*<Route path='/:section/:page?/' component={List}/>*/}
         </div>
       </>
     )
