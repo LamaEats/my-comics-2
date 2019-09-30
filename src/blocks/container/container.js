@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 
 import Nav from '@@Components/UI/Navigation'
 import { MainPage } from '../../pages/MainPage/MainPage'
-import List from '../../pages/List/List'
+import { List } from '../../pages/List/List'
 import { ComicsTable } from '../../pages/ComicsTable'
 import { ModalsContainer } from '../../pages/Modals/container'
 

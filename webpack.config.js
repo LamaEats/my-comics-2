@@ -1,8 +1,10 @@
 const webpack = require('webpack')
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { NODE_ENV } = process.env
 
+const devMode = !NODE_ENV || NODE_ENV !== 'production'
 
 module.exports = {
   resolve: {
@@ -26,7 +28,6 @@ module.exports = {
         },
       ],
     },
-    hot: true,
     open: false,
     overlay: {
       warnings: true,
@@ -51,6 +52,10 @@ module.exports = {
         ignore: ['.*'],
       },
     ]),
+    new MiniCssExtractPlugin({
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    }),
   ],
   module: {
     rules: [
@@ -60,45 +65,17 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
-        test: /\.less/,
+        test: /\.(le|c)ss$/,
         use: [
           {
-            loader: 'style-Loader',
+            loader: MiniCssExtractPlugin.loader,
             options: {
-              sourceMap: true
+              hmr: devMode,
             },
           },
-          {
-            loader: 'css-Loader',
-            options: {
-              sourceMap: true
-            },
-          },
-          {
-            loader: 'less-Loader',
-            options: {
-              sourceMap: true
-            },
-          },
+          'css-loader',
+          'less-loader',
         ],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-Loader',
-            options: {
-              sourceMap: true
-            },
-          },
-          {
-            loader: 'css-Loader',
-            options: {
-              name: '/styles.css',
-              sourceMap: true
-            }
-          },
-        ]
       },
       {
         test: /\.(ttf|eot|woff2?|svg)$/,

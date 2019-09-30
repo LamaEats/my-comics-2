@@ -1,5 +1,5 @@
 export const range = (from, to) => {
-    let array = [];
+    const array = [];
     let i = from;
 
     do {

@@ -8,7 +8,7 @@ import {
 } from './utils'
 
 export const makeClassNames = (...args) => {
-  let classes = []
+  const classes = []
 
   forEach(args, arg => {
     if (arg) {

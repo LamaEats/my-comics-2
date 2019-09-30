@@ -1,12 +1,15 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import reduxThunk from 'redux-thunk'
-import reducer from './reducers'
+import { mediator } from './mediator'
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export default function (initialState) {
+export default function (initialState = {}) {
   return createStore(
-    reducer,
+    combineReducers({
+      [mediator.name]: mediator.reducer,
+    }),
     initialState,
     composeEnhancers(
       applyMiddleware(

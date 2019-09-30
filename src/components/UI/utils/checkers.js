@@ -1,5 +1,5 @@
-export const toString = Object.prototype.toString
-export const hasOwnProperty = Object.prototype.hasOwnProperty
+export const {toString} = Object.prototype
+export const {hasOwnProperty} = Object.prototype
 
 export const isObject = (value) => toString.call(value) === '[object Object]'
 export const isArray = (value) => toString.call(value) === '[object Array]'

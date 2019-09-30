@@ -1,0 +1,36 @@
+{
+  
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "parser": "babel-eslint",
+  "plugins": [
+    "import",
+    "react",
+    "react-hooks"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "classes": true
+    }
+  },
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "tabWidth": 2
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      "only-multiline"
+    ],
+    "semi": "off",
+    "no-restricted-imports": "off",
+    "import/prefer-default-export": "off"
+  }
+}

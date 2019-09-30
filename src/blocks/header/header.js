@@ -41,7 +41,7 @@ class Header extends React.Component {
 export default Header
 
 const HeaderToggleText = (props) => {
-  'use strict'
+  
 
   const { isOpened } = props
   const iconText = isOpened ? 'less' : 'more'

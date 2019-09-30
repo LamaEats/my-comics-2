@@ -1,5 +1,5 @@
-import { createGridElement } from './createGridElement'
 import { makeClassNames } from '@@Components/UI/utils/makeClassNames'
+import { createGridElement } from './createGridElement'
 
 export const Col = ({
   col = 12,

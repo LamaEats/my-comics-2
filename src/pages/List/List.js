@@ -1,15 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import UIComponents from '@@Components'
-import {
-  submitRequest,
-  changePage,
-  dropItems,
-  setItemId,
-  dropItemId,
-  showModal,
-  closeModal,
-} from '../../storage/actions'
+import { submitRequest } from '../../storage/actions'
+import {mediator} from '../../storage/mediator'
 
 
 const {
@@ -28,36 +21,35 @@ const {
   utils: {batchBy, truncate},
 } = UIComponents
 
+const { getter, setter } = mediator
 
-@connect((state, props) => {
-  let {section, page} = props.match.params
-  let params = {...state.params}
-  if (page) params = {...params, page: +page}
-
-
+@connect((state, { match }) => {
+  let { params: { section } } = match
   return {
-    ...state,
-    params,
     section,
+    params: getter.params(state),
+    items: getter.items(state),
+    id: getter.id(state),
+    shown: getter.shownModal(state),
+    isGetting: getter.isGetting(state)
   }
 }, {
   submitRequest,
-  changePage,
-  dropItems,
-  setItemId,
-  dropItemId,
-  showModal,
-  closeModal,
+  setItemId: setter.id,
+  changePage: page => dispatch => dispatch(setter.params({ page })),
+  dropItems: () => dispatch => dispatch(setter.items([])),
+  dropItemId: () => dispatch => dispatch(setter.id(null)),
+  closeModal: () => dispatch => dispatch(setter.shownModal(false)),
+  showModal: () => dispatch => dispatch(setter.shownModal(true))
 })
 
-class List extends Component {
+export class List extends Component {
   componentDidMount () {
-    const {submitRequest, section} = this.props
-    submitRequest(section)
+    this.props.submitRequest(this.props.section)
   }
 
   componentDidUpdate (prevProps) {
-    const {submitRequest, changePage, section: currentSection, params: {page}} = this.props
+    const { submitRequest, changePage, section: currentSection, params: {page} } = this.props
     const {section: prevSection, params: {page: prevPage}} = prevProps
 
     let section = prevSection
@@ -130,12 +122,13 @@ class List extends Component {
     ))
   }
 
+
   RenderModal = () => {
     const item = this.props.items.find(({id: uid}) => this.props.id === uid) || {}
     const {title, name, description} = item
 
     return (
-      <Modal onClose={this.onModalClose} shown={this.props.shownModal}>
+      <Modal onClose={this.onModalClose} shown={this.props.shown}>
         <Modal.Header slot="header">
           {title || name || ''}
         </Modal.Header>
@@ -174,5 +167,3 @@ class List extends Component {
     )
   }
 }
-
-export default List
