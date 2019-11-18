@@ -5,5 +5,5 @@ export { portalNode }
 export const MODAL_SIZE = {
   LG: 'LG',
   MD: 'MD',
-  SM: 'sm'
+  SM: 'SM'
 }

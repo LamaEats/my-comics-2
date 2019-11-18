@@ -19,7 +19,7 @@ const prepareResponseData = (data) => {
   try {
     data = JSON.parse(data)
   } catch (e) {
-    logger('Request error', e)
+    console.log('Request error', e)
   }
 
   data = ['data'].reduce(spreadResponse, data)
