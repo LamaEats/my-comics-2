@@ -1,1 +1,0 @@
-export { ComicsTable } from './ComicsTable'

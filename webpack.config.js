@@ -2,16 +2,19 @@ const webpack = require('webpack')
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { NODE_ENV } = process.env
+const {
+  NODE_ENV
+} = process.env
 
 const devMode = !NODE_ENV || NODE_ENV !== 'production'
 
 module.exports = {
   resolve: {
-    extensions: [ '.js', '.jsx' ],
+    extensions: ['.js', '.jsx'],
     alias: {
       '@@Components': path.posix.join(__dirname, 'src/components/'),
     },
+    modules: [path.resolve(__dirname, 'src'), 'node_modules', path.resolve('node_modules')],
   },
   entry: './src/index.js',
   output: {
@@ -21,12 +24,10 @@ module.exports = {
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: {
-      rewrites: [
-        {
-          from: /\/(.?)+$/,
-          to: 'index.html',
-        },
-      ],
+      rewrites: [{
+        from: /\/(.?)+$/,
+        to: 'index.html',
+      }, ],
     },
     open: false,
     overlay: {
@@ -45,29 +46,28 @@ module.exports = {
   mode: NODE_ENV || 'development',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, './static'),
-        to: '/',
-        ignore: ['.*'],
-      },
-    ]),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, './static'),
+      to: '/',
+      ignore: ['.*'],
+    }, ]),
     new MiniCssExtractPlugin({
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(devMode)
+    })
   ],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
       {
         test: /\.(le|c)ss$/,
-        use: [
-          {
+        use: [{
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: devMode,

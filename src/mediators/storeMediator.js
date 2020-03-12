@@ -1,4 +1,7 @@
-import { forEach, keys } from '@@Components/UI/utils/utils'
+import {
+  forEach,
+  keys
+} from '../components'
 
 
 export const createSelector = (state, ...stateGetters) => stateGetters.reduce(
@@ -26,9 +29,9 @@ const getActionCreator = namespace => (type, actionFn) => {
 const getActionHandler = namespace => (actionHandlersMap, defaultState) => {
   const actionKeys = keys(actionHandlersMap)
 
-  const handlers = actionKeys.reduce((result, actionName) => {
-    result[`${namespace}/${actionName}`] = actionHandlersMap[actionName]
-    return result
+  const handlers = actionKeys.reduce((acc, actionName) => {
+    acc[`${namespace}/${actionName}`] = actionHandlersMap[actionName]
+    return acc
   }, {})
 
   return (state, action) => {
@@ -45,32 +48,43 @@ export const createMediator = (namespace, initialState) => {
 
   const resetState = actionCreator('RESET', () => undefined)
 
-  const setter = stateKeys.reduce((setters, actionType) => {
-    setters[actionType] = actionCreator(actionType, (value) => ({value}))
-    return setters
-  }, {resetState})
+  const set = stateKeys.reduce((acc, actionType) => {
+    acc[actionType] = actionCreator(actionType, (value) => ({
+      value
+    }))
+    return acc
+  }, {
+    resetState
+  })
 
-  const getter = state => createSelector(state, partialState => partialState[namespace])
+  const get = state => createSelector(state, partialState => partialState[namespace])
 
   forEach(stateKeys, (key) =>
-    Object.defineProperty(getter, key, {
+    Object.defineProperty(get, key, {
       enumerable: true,
       configurable: false,
       writable: false,
-      value: state => createSelector(state, getter, partialState => partialState[key]),
+      value: state => createSelector(state, get, partialState => partialState[key]),
     }),
   )
 
-  const handler = stateKeys.reduce((handlers, actionType) => {
-    handlers[setter[actionType]] = (state, {payload: {value}}) => ({...state, [actionType]: value})
-    return handlers
+  const handler = stateKeys.reduce((acc, actionType) => {
+    acc[set[actionType]] = (state, {
+      payload: {
+        value
+      }
+    }) => ({
+      ...state,
+      [actionType]: value
+    })
+    return acc
   }, {
     [resetState]: () => initialState,
   })
 
   return {
-    getter,
-    setter,
+    get,
+    set,
     reducer: handleActions(handler, initialState),
     name: namespace,
   }

@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "es2020": true
   },
   "extends": [
     "airbnb-base",
@@ -14,13 +15,19 @@
     "react-hooks"
   ],
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 11,
     "sourceType": "module",
     "ecmaFeatures": {
-      "classes": true
+      "classes": true,
+      "legacyDecorators": true,
+      "experimentalDecorators": true,
+      "jxs": true
     }
   },
   "rules": {
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1,
     "max-len": [
       "error",
       {
@@ -33,7 +40,13 @@
       "only-multiline"
     ],
     "semi": "off",
-    "no-restricted-imports": "off",
-    "import/prefer-default-export": "off"
+    "import/named": 2,
+    "import/prefer-default-export": 0,
+    "import/extensions": ["error", "never", {
+      "json": "always",
+      "svg": "always"
+    }],
+    "import/no-unresolved": "off",
+    "import/export": 0
   }
 }

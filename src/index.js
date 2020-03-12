@@ -2,7 +2,7 @@ import './main.less';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MyComicsApp as DefaultApp } from './wrapper/MyComicsApp'
+import { Main } from './pages/Main'
 
 
-ReactDOM.render(<DefaultApp/>, document.querySelector('.app_root'));
+ReactDOM.render(<Main/>, document.querySelector('.app_root'));

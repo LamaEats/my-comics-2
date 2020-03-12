@@ -1,0 +1,73 @@
+#wrap {
+  &--wrap {
+    flex-wrap: wrap;
+  }
+}
+
+#makeGrid (@n, @i: 1) when (@n >=@i) {
+  @w: percentage(@i / @n);
+
+  .col-@{i} {
+    flex-basis: @w;
+    max-width: @w;
+  }
+
+  #makeGrid(@n, @i + 1)
+}
+
+#makeOffsets (@n, @i: 1) when (@n > @i) {
+  @offset: percentage(@i / @n);
+
+  .col-offset-@{i} {
+    margin-left: calc(@offset - (@gutter / 2));
+  }
+
+  #makeOffsets(@n, @i + 1)
+}
+
+#makeSpaces (@i: 1) when (@i <=length(@spaces)) {
+  @name: extract(@spaces, @i);
+
+  &-@{name} {
+    height: @gutter / @i;
+  }
+
+  #makeSpaces(@i + 1);
+}
+
+.grid {
+  padding: 0 @gutter / 2;
+  position: relative;
+}
+
+.row {
+  margin-left: -(@gutter / 2);
+  margin-right: -(@gutter / 2);
+  display: flex;
+  min-width: 0;
+  #wrap();
+}
+
+#subClass(row--align, align-items, @align);
+#subClass(row--justify, justify-content, @justify);
+#subClass(row--direction, flex-direction, @direction);
+
+[class^=col] {
+  padding: 0 @gutter / 2;
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 1px;
+}
+
+#makeGrid(12);
+#makeOffsets(12);
+
+
+.space {
+  width: 100%;
+
+  #makeSpaces();
+}

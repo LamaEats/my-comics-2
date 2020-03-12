@@ -1,8 +1,17 @@
-import { Request, apis } from '../utils'
-import { mediator } from './mediator'
+import {
+  Request
+} from '../utils'
+import {
+  mediator
+} from './mediator'
 
-const { getter, setter } = mediator
+const {
+  getter,
+  setter
+} = mediator
 const calculateOffset = (goToPage, count = 20) => (goToPage - 1) * count
+
+const apis = {}
 
 export const submitRequest = section => async (dispatch, getState) => {
   dispatch(setter.isGetting(false))
@@ -20,11 +29,23 @@ export const submitRequest = section => async (dispatch, getState) => {
     }
   }
 
-  const { data } = await Request.get(apis[path], {params: sendParams})
-  const { results, offset, total, limit } = data
+  const {
+    data
+  } = await Request.get(apis[path], {
+    params: sendParams
+  })
+  const {
+    results,
+    offset,
+    total,
+    limit
+  } = data
 
   dispatch(setter.params({
-    offset, total, limit, page: params.page
+    offset,
+    total,
+    limit,
+    page: params.page
   }))
 
   dispatch(setter.items(results))
